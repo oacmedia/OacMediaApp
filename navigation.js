@@ -67,6 +67,7 @@ import ReelsScreen from "./app/screens/ReelsScreen";
 import ChatScreen from "./app/screens/ChatScreen";
 import CallScreen from "./app/screens/CallScreen";
 import FriendsScreen from "./app/screens/FriendsScreen";
+import PostsScreen from "./app/screens/PostsScreen";
 
 const Stack = createStackNavigator();
 
@@ -90,6 +91,7 @@ const SignedInStack = () => (
       <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
       <Stack.Screen name="AccountScreen" component={AccountScreen} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
+      <Stack.Screen name="PostsScreen" component={PostsScreen} />
       <Stack.Screen name="ReelsScreen" component={ReelsScreen} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="CallScreen" component={CallScreen} />
