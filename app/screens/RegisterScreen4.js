@@ -7,6 +7,7 @@ import Screen from "../components/Screen";
 import Text from "../components/Text";
 import { Form, FormField, SubmitButton } from "../components/forms";
 import defaultStyles from "../config/styles";
+import auth, { firebase, FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -44,6 +45,10 @@ function RegisterScreen({ navigation }) {
       <Form
         initialValues={{ phone: "" }}
         onSubmit={(values) => {
+            // const email = 'ukashatariq1@gmail.com';
+            // const password = '123456789';
+            // const user = await firebase.auth().createUserWithEmailAndPassword(email,password);
+            // console.log(user);
           console.log((callingCode[0] + values.phone).toString());
           navigation.push("HomeScreen");
         }}
