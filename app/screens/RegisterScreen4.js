@@ -132,9 +132,9 @@ function RegisterScreen({ navigation }) {
             const ph_no = ('+' + callingCode[0] + values.phone).toString();
             //const phReg = signInWPhoneNumber(ph_no);
             //console.log(phReg);
-            verifyPhoneNumber(ph_no);
+            //verifyPhoneNumber(ph_no);
           console.log(ph_no);
-          //navigation.push("HomeScreen");
+          navigation.push("HomeScreen");
         }}
         validationSchema={validationSchema}
       >

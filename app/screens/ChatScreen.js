@@ -91,8 +91,9 @@ const ChatScreen = ({ navigation }) => {
         ]}
       >
         <TouchableIcon name="camera" size={25} />
-        <TextInput placeholder="Message" padding={8} width={"70%"} />
+        <TouchableIcon name="image-multiple" size={25} />
         <TouchableIcon name="microphone" size={25} />
+        <TextInput placeholder="Message" padding={8} width={"60%"} />
         <TouchableIcon name="send" size={25} />
       </View>
     </Screen>
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 20,
-    paddingVertical: 8,
+    paddingVertical: '2%',
     backgroundColor: colors.darkGreen,
     width: "100%",
   },
@@ -121,23 +122,25 @@ const styles = StyleSheet.create({
   },
   incoming: {
     borderRadius: 50,
-    padding: 10,
+    paddingVertical: 7,
+    paddingHorizontal: 10,
     backgroundColor: colors.darkGrey,
     marginVertical: 1,
     marginLeft: 10,
   },
   outgoing: {
     borderRadius: 50,
-    padding: 10,
+    paddingVertical: 7,
+    paddingHorizontal: 10,
     backgroundColor: colors.darkGreen,
     marginVertical: 1,
     marginRight: 20,
   },
   head_image: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     resizeMode: "contain",
-    borderRadius: 50,
+    borderRadius: 40,
     marginLeft: 15,
     borderWidth: 1.6,
     borderColor: "#FF8501",

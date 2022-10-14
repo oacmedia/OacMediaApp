@@ -71,7 +71,7 @@ const movieData = [
 
 const ThumbsComponent = ({ movie }) => {
   return (
-    <Image key={movie.id}
+    <Image
       source={{
         uri: movie.url,
       }}
@@ -93,7 +93,7 @@ const ReelsScreen = ({ navigation }) => {
                   return movie.type == "Action";
                 })
                 .map((film) => {
-                  return <ThumbsComponent movie={film} />;
+                  return <ThumbsComponent key={film.id} movie={film} />;
                 })}
             </View>
           </ScrollView>

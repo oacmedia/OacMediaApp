@@ -32,19 +32,19 @@ export default SearchBar;
 // styles
 const styles = StyleSheet.create({
   container: {
-    margin: 15,
+    margin: 10,
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
-    width: "90%",
+    width: "100%",
   },
 
   searchBar__clicked: {
     padding: 10,
     flexDirection: "row",
     width: "80%",
-    backgroundColor: "#d9dbda",
-    borderRadius: 15,
+    backgroundColor: "white",
+    borderRadius: 50,
     alignItems: "center",
     justifyContent: "space-evenly",
   },
