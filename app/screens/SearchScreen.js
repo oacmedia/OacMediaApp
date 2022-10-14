@@ -4,6 +4,7 @@ import Screen from "../components/Screen";
 import List from "../components/search/List";
 import SearchBar from "../components/search/SearchBar";
 import colors from "../config/colors";
+import BottomTabs from "../components/home/BottomTabs";
 
 const users = [
   {
@@ -26,7 +27,7 @@ const users = [
   },
 ];
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }) => {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
   const [fakeData, setFakeData] = useState();
@@ -50,6 +51,7 @@ const SearchScreen = () => {
         data={fakeData}
         setClicked={setClicked}
       />
+      <BottomTabs navigation={navigation} />
     </Screen>
   );
 };

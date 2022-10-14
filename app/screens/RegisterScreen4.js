@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import * as Yup from "yup";
 import CountryPicker from "react-native-country-picker-modal";
@@ -22,6 +22,86 @@ const validationSchema = Yup.object().shape({
 function RegisterScreen({ navigation }) {
   const [countryCode, setCountryCode] = useState("");
   const [callingCode, setCallingCode] = useState("");
+  //const [confirm, setConfirm] = useState(null);
+  //const [code, setCode] = useState('');
+
+  // async function signInWPhoneNumber(phoneNumber) {
+  //   const confirmation = await firebase.auth().signInWithPhoneNumber(phoneNumber);
+  //   setConfirm(confirmation);
+  //   console.log(confirmation);
+  // }
+  
+  // async function confirmCode() {
+  //   try {
+  //     await confirm.confirm(code);
+  //   } catch (error) {
+  //     console.log('Invalid code.');
+  //   }
+  // }
+
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // If null, no SMS has been sent
+  const [confirm, setConfirm] = useState(null);
+
+  const [code, setCode] = useState('');
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  // Handle create account button press
+  async function createAccount() {
+    try {
+      await auth().createUserWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!');
+      console.log('User account created & signed in!');
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+      console.error(error);
+    }
+  }
+
+  // Handle the verify phone button press
+  async function verifyPhoneNumber(phoneNumber) {
+    const confirmation = await firebase.auth().verifyPhoneNumber(phoneNumber);
+    setConfirm(confirmation);
+    console.log(confirm);
+  }
+
+  // Handle confirm code button press
+  async function confirmCode() {
+    try {
+      const credential = auth.PhoneAuthProvider.credential(confirm.verificationId, code);
+      let userData = await auth().currentUser.linkWithCredential(credential);
+      setUser(userData.user);
+    } catch (error) {
+      if (error.code == 'auth/invalid-verification-code') {
+        console.log('Invalid code.');
+      } else {
+        console.log('Account linking error');
+      }
+    }
+  }
+
+  if (initializing) return null;
+
+
+
   return (
     <Screen style={styles.container}>
       <Text style={styles.h1}>Enter your mobile number</Text>
@@ -49,8 +129,12 @@ function RegisterScreen({ navigation }) {
             // const password = '123456789';
             // const user = await firebase.auth().createUserWithEmailAndPassword(email,password);
             // console.log(user);
-          console.log((callingCode[0] + values.phone).toString());
-          navigation.push("HomeScreen");
+            const ph_no = ('+' + callingCode[0] + values.phone).toString();
+            //const phReg = signInWPhoneNumber(ph_no);
+            //console.log(phReg);
+            verifyPhoneNumber(ph_no);
+          console.log(ph_no);
+          //navigation.push("HomeScreen");
         }}
         validationSchema={validationSchema}
       >
