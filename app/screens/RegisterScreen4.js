@@ -7,7 +7,15 @@ import Screen from "../components/Screen";
 import Text from "../components/Text";
 import { Form, FormField, SubmitButton } from "../components/forms";
 import defaultStyles from "../config/styles";
-import auth, { firebase, FirebaseAuthTypes } from '@react-native-firebase/auth';
+import firebase from '@react-native-firebase/app';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+// import {collection, addDoc, where, query, getDocs} from '@react-native-firebase/firestore';
+import { useUserAuth } from "../context/UserAuthContext";
+// const usersCollection = firestore().collection('Users');
+
+//const querySnapshot = firebase.firestore();
+
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -22,14 +30,16 @@ const validationSchema = Yup.object().shape({
 function RegisterScreen({ navigation }) {
   const [countryCode, setCountryCode] = useState("");
   const [callingCode, setCallingCode] = useState("");
+  const {user, setUser} = useUserAuth();
+  const [error, setError] = useState();
   //const [confirm, setConfirm] = useState(null);
   //const [code, setCode] = useState('');
 
-  // async function signInWPhoneNumber(phoneNumber) {
-  //   const confirmation = await firebase.auth().signInWithPhoneNumber(phoneNumber);
-  //   setConfirm(confirmation);
-  //   console.log(confirmation);
-  // }
+  async function signInWPhoneNumber(phoneNumber) {
+    const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+    setConfirm(confirmation);
+    console.log(confirmation);
+  }
   
   // async function confirmCode() {
   //   try {
@@ -41,7 +51,7 @@ function RegisterScreen({ navigation }) {
 
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  // const [user, setUser] = useState();
 
   // If null, no SMS has been sent
   const [confirm, setConfirm] = useState(null);
@@ -77,11 +87,11 @@ function RegisterScreen({ navigation }) {
   }
 
   // Handle the verify phone button press
-  async function verifyPhoneNumber(phoneNumber) {
-    const confirmation = await firebase.auth().verifyPhoneNumber(phoneNumber);
-    setConfirm(confirmation);
-    console.log(confirm);
-  }
+  // async function verifyPhoneNumber(phoneNumber) {
+  //   const confirmation = await auth().verifyPhoneNumber(phoneNumber);
+  //   setConfirm(confirmation);
+  //   console.log(confirm);
+  // }
 
   // Handle confirm code button press
   async function confirmCode() {
@@ -124,17 +134,88 @@ function RegisterScreen({ navigation }) {
       </View>
       <Form
         initialValues={{ phone: "" }}
-        onSubmit={(values) => {
-            // const email = 'ukashatariq1@gmail.com';
+        onSubmit={async(values) => {
+            
+            const usersCollection = firebase.firestore().collection('Users')
+            .add({
+              name: 'Ada Lovelace',
+              age: 30,
+            })
+            .then(() => {
+              console.log('User added!');
+            });
+            console.log(usersCollection);
+
+              
+
+
+
+
+          //setError('');
+          console.log((callingCode[0] + values.phone).toString());
+          console.log("country" , countryCode);
+          let data = {...user , phone: '+'+callingCode[0] + values.phone , countryCode};
+          setUser(data);
+          // const db = await usersCollection.get();
+
+          // console.log({db});
+
+
+
+          // const confirmation = await signInWithPhoneNumber(callingCode[0] + values.phone);
+          // console.log(confirmation);
+          // const usersCollectionRef = doc(db, 'users' , data.phone)
+          // const colRef = firestore().collection('users')
+          // const usersCollectionRef = firestore().collection('users').query(colRef , firestore().collection('users').where('phone' , '==' , data.phone));
+          // const doc = await firestore().getDocs(usersCollectionRef);
+          // if(doc.docs[0]){
+          //   setError('Phone number already exist.');
+          //   return
+          // }
+          // await firestore().collection('users').add(data);
+          // console.log("user created successfully");
+          // firestore().collection('Users').get()
+          // .then(querySnapshot => {
+          //   console.log('User added!');
+          //   querySnapshot.forEach(record => {
+          //     console.log(record.data());
+          //   })
+          // });
+          //setUser({});
+          // navigation.push("LoginScreen");
+            // const email = 'ukashatariq21@gmail.com';
             // const password = '123456789';
-            // const user = await firebase.auth().createUserWithEmailAndPassword(email,password);
+            // const user = await auth().createUserWithEmailAndPassword(email,password);
             // console.log(user);
-            const ph_no = ('+' + callingCode[0] + values.phone).toString();
-            //const phReg = signInWPhoneNumber(ph_no);
+            // const ph_no = ('+' + callingCode[0] + values.phone).toString();
+            //const phReg = await signInWPhoneNumber(ph_no);
+            // ()=>{
+            //   return (
+            //     <View>
+            //       <Text style={styles.h1}>Enter the OTP you received</Text>
+            //     <Form
+            //       initialValues={{ phone: "" }}
+            //       onSubmit={(values) => {
+            //         console.log(values);
+            //       }}
+            //       validationSchema={validationSchema}
+            //     >
+            //       <FormField
+            //         autoCapitalize="none"
+            //         autoCorrect={false}
+            //         name="OTP"
+            //         placeholder={"OTP"}
+            //         keyboardType="phone-pad"
+            //       />
+            //       <SubmitButton title="Next" />
+            //       </Form>
+            //     </View>
+            //   )
+            // };
             //console.log(phReg);
             //verifyPhoneNumber(ph_no);
-          console.log(ph_no);
-          navigation.push("HomeScreen");
+          // console.log(ph_no);
+          //navigation.push("HomeScreen");
         }}
         validationSchema={validationSchema}
       >

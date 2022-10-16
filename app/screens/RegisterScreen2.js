@@ -8,6 +8,8 @@ import { Form, FormField, SubmitButton } from "../components/forms";
 import AppPicker from "../components/Picker";
 import { useState } from "react";
 
+import {useUserAuth} from "../context/UserAuthContext";
+
 const categories = [
   { label: "Bro", value: 1 },
   { label: "Sis", value: 2 },
@@ -26,6 +28,9 @@ const validationSchema = Yup.object().shape({
 
 function RegisterScreen({ navigation }) {
   const [category, setCategory] = useState();
+  const [firstname , setFirstname] = useState('');
+  const [lastname , setLastname] = useState('');
+  const {setUser} = useUserAuth();
   return (
     <Screen style={styles.container}>
       <Text style={styles.h1}>What's your name?</Text>
@@ -37,24 +42,28 @@ function RegisterScreen({ navigation }) {
         onSelectItem={(item) => setCategory(item)}
       />
       <Form
-        initialValues={{ firstname: "", lastname: "" }}
+        initialValues={{firstname,lastname}}
         onSubmit={(values) => {
           console.log(values);
-          navigation.push("RegisterScreen3");
+          setUser((prev) => ({...prev , firstname: values.firstname , lastname : values.lastname , title:category.label}))
+          navigation.push("RegisterScreen3" , values);
         }}
         validationSchema={validationSchema}
       >
         <FormField
           autoCorrect={false}
           name="firstname"
+          value={firstname}
           placeholder="First Name"
+          onChange={(e)=> setFirstname(e.target.value)}
         />
         <FormField
           autoCorrect={false}
           name="lastname"
+          value={lastname}
           placeholder="Last Name"
+          onChange={(e)=> setLastname(e.target.value)}
         />
-
         <SubmitButton title="Next" />
       </Form>
     </Screen>

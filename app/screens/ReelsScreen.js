@@ -108,7 +108,7 @@ const ReelsScreen = ({ navigation }) => {
                   return movie.type == "Comedy";
                 })
                 .map((film) => {
-                  return <ThumbsComponent movie={film} />;
+                  return <ThumbsComponent key={film.id} movie={film} />;
                 })}
             </View>
           </ScrollView>
@@ -123,7 +123,7 @@ const ReelsScreen = ({ navigation }) => {
                   return movie.type == "Sci-Fi";
                 })
                 .map((film) => {
-                  return <ThumbsComponent movie={film} />;
+                  return <ThumbsComponent key={film.id} movie={film} />;
                 })}
             </View>
           </ScrollView>
@@ -138,7 +138,7 @@ const ReelsScreen = ({ navigation }) => {
                   return movie.type == "Crime";
                 })
                 .map((film) => {
-                  return <ThumbsComponent movie={film} />;
+                  return <ThumbsComponent key={film.id} movie={film} />;
                 })}
             </View>
           </ScrollView>

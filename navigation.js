@@ -68,6 +68,7 @@ import ChatScreen from "./app/screens/ChatScreen";
 import CallScreen from "./app/screens/CallScreen";
 import FriendsScreen from "./app/screens/FriendsScreen";
 import PostsScreen from "./app/screens/PostsScreen";
+import {UserAuthContextProvider} from './app/context/UserAuthContext';
 
 const Stack = createStackNavigator();
 
@@ -76,6 +77,7 @@ const screenOptions = {
 };
 
 const SignedInStack = () => (
+  <UserAuthContextProvider>
   <NavigationContainer>
     <Stack.Navigator
       initialRouteName="LoginScreen"
@@ -98,6 +100,7 @@ const SignedInStack = () => (
       <Stack.Screen name="FriendsScreen" component={FriendsScreen} />
     </Stack.Navigator>
   </NavigationContainer>
+  </UserAuthContextProvider>
 );
 
 export default SignedInStack;

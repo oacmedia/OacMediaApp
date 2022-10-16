@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import Screen from "../components/Screen";
 import Text from "../components/Text";
 import { Form, FormField, SubmitButton } from "../components/forms";
-
+import {useUserAuth} from "../context/UserAuthContext";
 const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(4).label("Password"),
   confirmPassword: Yup.string()
@@ -15,14 +15,16 @@ const validationSchema = Yup.object().shape({
 });
 
 function RegisterScreen({ navigation }) {
+  const {setUser} = useUserAuth();
   return (
     <Screen style={styles.container}>
       <Text style={styles.h1}>Let's set up a password for you</Text>
-      <Text style={styles.text}>Enter your email and password.</Text>
+      <Text style={styles.text}>Enter your password.</Text>
       <Form
         initialValues={{ password: "" }}
         onSubmit={(values) => {
           console.log(values);
+          setUser((prev) => ({...prev , password: values.password}))
           navigation.push("RegisterScreen4");
         }}
         validationSchema={validationSchema}
