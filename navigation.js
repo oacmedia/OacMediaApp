@@ -60,6 +60,7 @@ import RegisterScreen2 from "./app/screens/RegisterScreen2";
 import RegisterScreen3 from "./app/screens/RegisterScreen3";
 import ListingEditScreen from "./app/screens/ListingEditScreen";
 import RegisterScreen4 from "./app/screens/RegisterScreen4";
+import RegisterScreen5 from "./app/screens/RegisterScreen5";
 import MessagesScreen from "./app/screens/MessagesScreen";
 import AccountScreen from "./app/screens/AccountScreen";
 import SearchScreen from "./app/screens/SearchScreen";
@@ -88,6 +89,7 @@ const SignedInStack = () => (
       <Stack.Screen name="RegisterScreen2" component={RegisterScreen2} />
       <Stack.Screen name="RegisterScreen3" component={RegisterScreen3} />
       <Stack.Screen name="RegisterScreen4" component={RegisterScreen4} />
+      <Stack.Screen name="RegisterScreen5" component={RegisterScreen5} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="ListingEditScreen" component={ListingEditScreen} />
       <Stack.Screen name="MessagesScreen" component={MessagesScreen} />

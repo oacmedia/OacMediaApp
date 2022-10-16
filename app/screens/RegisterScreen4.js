@@ -38,6 +38,7 @@ function RegisterScreen({ navigation }) {
   async function signInWPhoneNumber(phoneNumber) {
     const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
     setConfirm(confirmation);
+    return confirmation;
     console.log(confirmation);
   }
   
@@ -49,25 +50,14 @@ function RegisterScreen({ navigation }) {
   //   }
   // }
 
-  // Set an initializing state whilst Firebase connects
-  const [initializing, setInitializing] = useState(true);
+  
   // const [user, setUser] = useState();
 
   // If null, no SMS has been sent
   const [confirm, setConfirm] = useState(null);
 
-  const [code, setCode] = useState('');
 
-  // Handle user state changes
-  function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+  
 
   // Handle create account button press
   async function createAccount() {
@@ -94,21 +84,20 @@ function RegisterScreen({ navigation }) {
   // }
 
   // Handle confirm code button press
-  async function confirmCode() {
-    try {
-      const credential = auth.PhoneAuthProvider.credential(confirm.verificationId, code);
-      let userData = await auth().currentUser.linkWithCredential(credential);
-      setUser(userData.user);
-    } catch (error) {
-      if (error.code == 'auth/invalid-verification-code') {
-        console.log('Invalid code.');
-      } else {
-        console.log('Account linking error');
-      }
-    }
-  }
+  // async function confirmCode() {
+  //   try {
+  //     const credential = auth.PhoneAuthProvider.credential(confirm.verificationId, code);
+  //     let userData = await auth().currentUser.linkWithCredential(credential);
+  //     setUser(userData.user);
+  //   } catch (error) {
+  //     if (error.code == 'auth/invalid-verification-code') {
+  //       console.log('Invalid code.');
+  //     } else {
+  //       console.log('Account linking error');
+  //     }
+  //   }
+  // }
 
-  if (initializing) return null;
 
 
 
@@ -135,16 +124,14 @@ function RegisterScreen({ navigation }) {
       <Form
         initialValues={{ phone: "" }}
         onSubmit={async(values) => {
+            //const user = await firestore().collection('Users').doc('5VyDBNvGpTl9FOxaD5f4');
+            // const dat = await user.set({
+            //   name: 'Ada Lovelace',
+            //   age: 30,
+            // });
+
+            //console.log(user);
             
-            const usersCollection = firebase.firestore().collection('Users')
-            .add({
-              name: 'Ada Lovelace',
-              age: 30,
-            })
-            .then(() => {
-              console.log('User added!');
-            });
-            console.log(usersCollection);
 
               
 
@@ -152,10 +139,9 @@ function RegisterScreen({ navigation }) {
 
 
           //setError('');
-          console.log((callingCode[0] + values.phone).toString());
-          console.log("country" , countryCode);
-          let data = {...user , phone: '+'+callingCode[0] + values.phone , countryCode};
-          setUser(data);
+          // console.log((callingCode[0] + values.phone).toString());
+          // console.log("country" , countryCode);
+           
           // const db = await usersCollection.get();
 
           // console.log({db});
@@ -187,8 +173,11 @@ function RegisterScreen({ navigation }) {
             // const password = '123456789';
             // const user = await auth().createUserWithEmailAndPassword(email,password);
             // console.log(user);
-            // const ph_no = ('+' + callingCode[0] + values.phone).toString();
-            //const phReg = await signInWPhoneNumber(ph_no);
+            const ph_no = ('+' + callingCode[0] + values.phone).toString();
+            const verCode = await signInWPhoneNumber(ph_no);
+            const verCode2 = verCode._verificationId;
+            let data = {...user , phone: '+'+callingCode[0] + values.phone , countryCode, verCode2};
+            setUser(data);
             // ()=>{
             //   return (
             //     <View>
@@ -214,8 +203,8 @@ function RegisterScreen({ navigation }) {
             // };
             //console.log(phReg);
             //verifyPhoneNumber(ph_no);
-          // console.log(ph_no);
-          //navigation.push("HomeScreen");
+          console.log(ph_no);
+          navigation.push("RegisterScreen5");
         }}
         validationSchema={validationSchema}
       >

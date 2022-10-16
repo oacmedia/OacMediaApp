@@ -7,6 +7,7 @@ import { Form, FormField, SubmitButton } from "../components/forms";
 import Text from "../components/Text";
 import colors from "../config/colors";
 
+
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const validationSchema = Yup.object().shape({

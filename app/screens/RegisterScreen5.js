@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import * as Yup from "yup";
 
@@ -6,30 +6,74 @@ import Screen from "../components/Screen";
 import Text from "../components/Text";
 import { Form, FormField, SubmitButton } from "../components/forms";
 import defaultStyles from "../config/styles";
+import { useUserAuth } from "../context/UserAuthContext";
+import firebase from '@react-native-firebase/app';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 const validationSchema = Yup.object().shape({
   phone: Yup.string().required().label("OTP"),
 });
 
-function RegisterScreen({ navigation }) {
+function RegisterScreen5({ navigation }) {
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  //const [code, setCode] = useState('');
+  const {user, setUser} = useUserAuth();
+  const [loginUser, setLoginUser] = useState('');
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setLoginUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  // Handle confirm code button press
+  async function confirmCode(code) {
+    try {
+      console.log(user.verCode2);
+      console.log(code);
+      const credential = auth.PhoneAuthProvider.credential(user.verCode2, code);
+      console.log(credential);
+      let userData = await auth().signInWithCredential(credential);
+      console.log(userData);
+      navigation.push("HomeScreen");
+    } catch (error) {
+      if (error.code == 'auth/invalid-verification-code') {
+        console.log('Invalid code.');
+      } else {
+        console.log(error);
+      }
+    }
+  }
+
+  //if (initializing) return null;
+
   return (
     <Screen style={styles.container}>
       <Text style={styles.h1}>Enter the OTP you received</Text>
       <Form
-        initialValues={{ phone: "" }}
+        initialValues={{ otp: "" }}
         onSubmit={(values) => {
           console.log(values);
+          confirmCode(values.otp);
+          //console.log("code" , code);
+          //confirmCode();
         }}
-        validationSchema={validationSchema}
+        //validationSchema={validationSchema}
       >
         <FormField
           autoCapitalize="none"
           autoCorrect={false}
-          name="OTP"
+          name="otp"
           placeholder={"OTP"}
           keyboardType="phone-pad"
         />
-        <SubmitButton title="Next" />
+        <SubmitButton title="Next" onTap={()=>{console.log('Ki Hal Ay!')}}/>
       </Form>
     </Screen>
   );
@@ -65,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterScreen;
+export default RegisterScreen5;
