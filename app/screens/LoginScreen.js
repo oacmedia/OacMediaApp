@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import * as Yup from "yup";
 
@@ -6,6 +6,13 @@ import Screen from "../components/Screen";
 import { Form, FormField, SubmitButton } from "../components/forms";
 import Text from "../components/Text";
 import colors from "../config/colors";
+import {firebase, FirebaseApp} from '@react-native-firebase/app';
+import auth from '@react-native-firebase/auth';
+import firestore from "@react-native-firebase/firestore";
+
+//let app = firebase.app();
+//let app = firebase.apps[0].firestore;
+//let app = firestore;
 
 
 const phoneRegExp =
@@ -19,6 +26,16 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen({ navigation }) {
+  useEffect(() => {
+      const docRef = firestore().collection("c1").doc();
+      docRef.set({
+        ukasha: "begart",
+        isTrue: "Yes"
+      }).then(() => {
+        console.log("Custom Effect")
+      })
+    }, [])
+  console.log('Hello!');
   return (
     <Screen style={styles.container}>
       <Text style={styles.logo}>OAC</Text>
@@ -27,8 +44,23 @@ function LoginScreen({ navigation }) {
         initialValues={{ phone: "", password: "" }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          console.log(values);
-          navigation.push("HomeScreen");
+          //console.log(firestore.Timestamp.fromDate(new Date()));
+          collection('posts').add({
+              userId: '123',
+              post: 'post',
+              postTime: this.Timestamp.fromDate(new Date()),
+              likes: null,
+              comments: null,
+        })
+        .then(() => {
+          console.log('Post Added!');
+          Alert.alert(
+            'Post published!',
+            'Your post has been published Successfully!',
+        );
+        setPost(null);
+      })
+          //navigation.push("HomeScreen");
         }}
       >
         <FormField

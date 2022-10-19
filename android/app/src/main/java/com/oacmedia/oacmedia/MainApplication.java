@@ -20,7 +20,8 @@ import expo.modules.ReactNativeHostWrapper;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import androidx.multidex.MultiDexApplication;
-import io.invertase.firebase.firestore.ReactNativeFirebaseFirestorePackage;
+//import io.invertase.firebase.firestore.ReactNativeFirebaseFirestorePackage;
+
 
 
 public class MainApplication extends MultiDexApplication implements ReactApplication {
@@ -36,6 +37,12 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
+      
+      //new MainReactPackage();
+      //packages.add(new MainReactPackage());
+      // String[] myArrayFirestore = {'new MainReactPackage();',
+      //   'new ReactNativeFirebaseFirestorePackage();'};
+      //packages.add(new ReactNativeFirebaseFirestorePackage());
       // Packages that cannot be autolinked yet can be added manually here, for example:
       // packages.add(new MyReactNativePackage());
     
